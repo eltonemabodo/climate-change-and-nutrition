@@ -26,7 +26,9 @@ zdhs_2015_pp <- zdhs_2015_survey %>%
   summarise() # To summarise the data. This is the data to be merged with other pseudo-panels from other dhss
 
 
+# Save the data to the "processed data" folder for merging with other cohorts data from other DHSs
 
+write_dta()
 
 
 
