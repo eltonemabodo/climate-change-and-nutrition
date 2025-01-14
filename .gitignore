@@ -47,3 +47,6 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Data - DHS data protection is given by the DHS Program
+data/*
