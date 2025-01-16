@@ -111,9 +111,9 @@ zdhs_2015 <- read_dta("climate-change-and-nutrition/data /raw data/zdhs_2015.DTA
          haz = as.numeric(as.character(haz)),
          waz = as.numeric(as.character(waz)),
          whz = as.numeric(as.character(whz)),
-         haz1 = ifelse(haz <= -201, 1, 0),
-         waz1 = if_else(waz <= -201, 1, 0),
-         whz1 = if_else(whz <= -201, 1, 0),
+         haz1 = ifelse(haz <= -200, 1, 0),
+         waz1 = if_else(waz <= -200, 1, 0),
+         whz1 = if_else(whz <= -200, 1, 0),
          education_level2 = case_when(
            education_level == "no education" | education_level == "primary" ~ 1,
            TRUE ~ 0
