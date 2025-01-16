@@ -197,7 +197,8 @@ zdhs_2015_pp <- zdhs_2015_survey %>%
   # Round Numeric values to 2 decimal places
   mutate(across(where(is.numeric), ~ round(., 2))) %>% 
   # Drop all variables ending with _se
-  select(-ends_with("_se"))
+  select(-ends_with("_se")) %>% 
+  mutate(time = 4)
 
 # Save the data to the "processed data" folder for merging with other cohorts data from other DHSs
 write_dta("climate-change-and-nutrition/data/processed data/processed_pp_2015.dta")
