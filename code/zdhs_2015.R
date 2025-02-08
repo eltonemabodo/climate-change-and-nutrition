@@ -7,10 +7,11 @@ library(survey) # for survey analysis
 library(srvyr) # for survey analysis
 library(here) # for file path management
 library(labelled) # for labelled data manipulation
+library(sf) # for spatial data manipulation
 
 
 # Reading the data
-zdhs_2015 <- read_dta("climate-change-and-nutrition/data /raw data/zdhs_2015.DTA") %>% 
+zdhs_2015 <- read_dta("GitHub/climate-change-and-nutrition/data /raw data/zdhs_2015.DTA") %>% 
   # convert labelled data to factors
   to_factor() %>%
   # Select the necessary columns
@@ -142,6 +143,23 @@ zdhs_2015 <- read_dta("climate-change-and-nutrition/data /raw data/zdhs_2015.DTA
            ~ as.numeric(as.character(.)))
   )
 
+# Load the DHS shapefile
+zdhs_geodata_2015 <- st_read("GitHub/climate-change-and-nutrition/data /raw data/ZWGE72FL/ZWGE72FL.shp")
+
+# Load the district level data
+
+zim_district <- st_read("GitHub/climate-change-and-nutrition/data /raw data/gadm41_ZWE_shp/gadm41_ZWE_2.shp")
+
+# Use the same crs for both datasets
+zim_district <- st_transform(zim_district, crs = st_crs(zdhs_geodata_2015))
+
+# Assign DHS Clusters to Districts - Join DHS Clusters with the districts
+zdhs15_district_geodata <- st_join(zdhs_geodata_2015, zim_district, join = st_within)
+
+# Merge the geodata with the zdhs data
+zdhs_2015 <- left_join(zdhs_2015, zdhs15_district_geodata, by = c("psu" = "DHSCLUST")) %>% 
+  rename(district = NAME_2)
+
 # Set the data as survey data for complex survey data analysis
 zdhs_2015_survey <- svydesign(
   ids = zdhs_2015$psu,
@@ -159,7 +177,7 @@ options(survey.lonely.psu = "adjust")
 
 # Create the pseudo-panel for the data
 zdhs_2015_pp <- zdhs_2015_survey %>% 
-  group_by(province, child_gender) %>% # To group the data and create the cohorts for the pseudo-panel
+  group_by(district) %>% # To group the data and create the cohorts for the pseudo-panel
   # Results from the code below will be used for analysis
   summarize(
     # Number of children in each cohort
@@ -198,7 +216,13 @@ zdhs_2015_pp <- zdhs_2015_survey %>%
   mutate(across(where(is.numeric), ~ round(., 2))) %>% 
   # Drop all variables ending with _se
   select(-ends_with("_se")) %>% 
-  mutate(time = 4)
+  mutate(time = 4) %>% 
+  drop_na(district)
+
+# Join the pseudo-panel data with the geodata
+zdhs15_pp_geodata <- left_join(zim_district, zdhs_2015_pp, by = c("NAME_2"="district"))
+
+
 
 # Save the data to the "processed data" folder for merging with other cohorts data from other DHSs
 write_dta("climate-change-and-nutrition/data/processed data/processed_pp_2015.dta")

@@ -10,7 +10,7 @@ library(here) # for file path management
 library(labelled) # for labelled data manipulation
 
 # loading the data
-zdhs_2010_11 <- read_dta("climate-change-and-nutrition/data /raw data/zdhs_2010:11.DTA") %>% 
+zdhs_2010_11 <- read_dta("GitHub/climate-change-and-nutrition/data /raw data/zdhs_2010:11.DTA") %>% 
   # convert labelled data to factors
   to_factor() %>%
   # Select the necessary columns
