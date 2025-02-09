@@ -6,6 +6,7 @@ library(geodata)
 library(lubridate)
 library(biscale)
 library(showtext)
+library(cowplot)
 
 
 # Custom Fonts for the plot
@@ -88,7 +89,7 @@ climate_province_data <- bi_class(climate_province_data,
 
 pallet <- "BlueOr"
 # Plot the bivariate map
-ggplot(data = climate_province_data) +
+climate_map <- ggplot(data = climate_province_data) +
   geom_sf(aes(fill = bi_class), color = "black") + # Map `fill` to the bivariate class
   bi_scale_fill(pal = pallet, dim = 3) +
   facet_wrap(~DHSYear, nrow = 1) +
@@ -114,7 +115,10 @@ legend <- bi_legend(pal = pallet,
                     dim = 3,
                     xlab = "Mean Annual Max Temperature (degrees)",
                     ylab = "Mean Farming Season Precipitation (mm)",
-                    size = 10)
+                    size = 10) +
+  theme(
+    text = element_text(family = "garamond", size = 12, face = "bold")
+  )
 
 
 
