@@ -104,8 +104,10 @@ climate_map <- ggplot(data = climate_province_data) +
     plot.subtitle = element_text(size = 10, margin = margin(b = 10, l = 10)),
     plot.caption = element_text(size = 7, margin = margin(t = 10, l = 10),
                                 hjust = 0),
-    legend.position = "none"
-  )
+    legend.position = "none",
+    strip.text = element_text(size = 10, face = "bold",
+                              margin = margin(b = 5, l = 15)))
+
 
 # Legend of bivariate map
 
@@ -120,7 +122,10 @@ legend <- bi_legend(pal = pallet,
     text = element_text(family = "garamond", size = 12, face = "bold")
   )
 
-
+# Combine the map and the legend
+complete_map <- ggdraw() +
+  draw_plot(climate_map, x = 0, y = 0, width = 0.8, height = 1) +
+  draw_plot(legend, x = 0.8, y = 0, width = 0.2, height = 1)
 
 
 
