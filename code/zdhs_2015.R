@@ -220,14 +220,12 @@ zdhs_2015_pp <- zdhs_2015_survey %>%
   drop_na(district)
 
 # Join the pseudo-panel data with the geodata
-zdhs15_pp_geodata <- left_join(zim_district, zdhs_2015_pp, by = c("NAME_2"="district"))
+zdhs15_pp_geodata <- left_join(zim_district, zdhs_2015_pp, by = c("ADM2_EN"="district"))
 
 
 
 # Save the data to the "processed data" folder for merging with other cohorts data from other DHSs
 write_dta("climate-change-and-nutrition/data/processed data/processed_pp_2015.dta")
-
-
 
 
 
