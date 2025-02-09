@@ -11,7 +11,7 @@ library(sf) # for spatial data manipulation
 
 
 # Reading the data
-zdhs_2015 <- read_dta("GitHub/climate-change-and-nutrition/data /raw data/zdhs_2015.DTA") %>% 
+zdhs_2015 <- read_dta("data /raw data/zdhs_2015.DTA") %>% 
   # convert labelled data to factors
   to_factor() %>%
   # Select the necessary columns
@@ -144,11 +144,11 @@ zdhs_2015 <- read_dta("GitHub/climate-change-and-nutrition/data /raw data/zdhs_2
   )
 
 # Load the DHS shapefile
-zdhs_geodata_2015 <- st_read("GitHub/climate-change-and-nutrition/data /raw data/ZWGE72FL/ZWGE72FL.shp")
+zdhs_geodata_2015 <- st_read("data /raw data/ZWGE72FL/ZWGE72FL.shp")
 
 # Load the district level data
 
-zim_district <- st_read("GitHub/climate-change-and-nutrition/data /raw data/zwe_adm2_zimstat_ocha/zwe_admbnda_adm2_zimstat_ocha_20180911.shp")
+zim_district <- st_read("data /raw data/zwe_adm2_zimstat_ocha/zwe_admbnda_adm2_zimstat_ocha_20180911.shp")
 
 # Use the same crs for both datasets
 zim_district <- st_transform(zim_district, crs = st_crs(zdhs_geodata_2015))
@@ -216,16 +216,14 @@ zdhs_2015_pp <- zdhs_2015_survey %>%
   mutate(across(where(is.numeric), ~ round(., 2))) %>% 
   # Drop all variables ending with _se
   select(-ends_with("_se")) %>% 
-  mutate(time = 4) %>% 
-  drop_na(district)
+  mutate(time = 4) 
 
 # Join the pseudo-panel data with the geodata
 zdhs15_pp_geodata <- left_join(zim_district, zdhs_2015_pp, by = c("ADM2_EN"="district"))
 
 
-
 # Save the data to the "processed data" folder for merging with other cohorts data from other DHSs
-write_dta("climate-change-and-nutrition/data/processed data/processed_pp_2015.dta")
+write_dta(zdhs_2015_pp, "data/processed data/processed_pp_2015.dta")
 
 
 
