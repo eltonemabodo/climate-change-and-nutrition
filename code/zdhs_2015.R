@@ -148,7 +148,7 @@ zdhs_geodata_2015 <- st_read("GitHub/climate-change-and-nutrition/data /raw data
 
 # Load the district level data
 
-zim_district <- st_read("GitHub/climate-change-and-nutrition/data /raw data/gadm41_ZWE_shp/gadm41_ZWE_2.shp")
+zim_district <- st_read("GitHub/climate-change-and-nutrition/data /raw data/zwe_adm2_zimstat_ocha/zwe_admbnda_adm2_zimstat_ocha_20180911.shp")
 
 # Use the same crs for both datasets
 zim_district <- st_transform(zim_district, crs = st_crs(zdhs_geodata_2015))
@@ -158,7 +158,7 @@ zdhs15_district_geodata <- st_join(zdhs_geodata_2015, zim_district, join = st_wi
 
 # Merge the geodata with the zdhs data
 zdhs_2015 <- left_join(zdhs_2015, zdhs15_district_geodata, by = c("psu" = "DHSCLUST")) %>% 
-  rename(district = NAME_2)
+  rename(district = ADM2_EN)
 
 # Set the data as survey data for complex survey data analysis
 zdhs_2015_survey <- svydesign(
