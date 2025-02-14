@@ -10,7 +10,7 @@ library(here) # for file path management
 library(labelled) # for labelled data manipulation
 
 # loading the data
-zdhs_2010_11 <- read_dta("GitHub/climate-change-and-nutrition/data /raw data/zdhs_2010:11.DTA") %>% 
+zdhs_2010_11 <- read_dta("data /raw data/zdhs_2010:11.DTA") %>% 
   # convert labelled data to factors
   to_factor() %>%
   # Select the necessary columns
@@ -145,22 +145,9 @@ zdhs_2010_11 <- read_dta("GitHub/climate-change-and-nutrition/data /raw data/zdh
   )
 
 # Load the DHS shapefile
-zdhs_geodata_2010_11 <- st_read("GitHub/climate-change-and-nutrition/data /raw data/ZWGE61FL/ZWGE61FL.shp")
+zdhs_geodata_2010_11 <- st_read("data /raw data/ZWGE61FL/ZWGE61FL.shp")
 
-# Load the district level data
-zim_district <- st_read("GitHub/climate-change-and-nutrition/data /raw data/gadm41_ZWE_shp/gadm41_ZWE_2.shp")
 
-# Transform the district level data to the same crs as the DHS data
-zim_district <- st_transform(zim_district, crs = st_crs(zdhs_geodata_2010_11))
-
-# Assign districts to the dhs data
-zdhs_2010_11_geodata <- st_join(zdhs_geodata_2010_11, zim_district, join = st_within)
-
-# Merge the geodata with the zdhs data
-zdhs_2010_11 <- left_join(zdhs_2010_11, zdhs_2010_11_geodata, by = c("psu" = "DHSCLUST")) %>% 
-  rename(
-    district = NAME_2
-  )
 
 # Set data to be survey data for complex survey data analysis
 zdhs_2010_11_survey <- svydesign(
@@ -181,7 +168,7 @@ options(survey.lonely.psu = "adjust")
 
 # Create the pseudo-panel for the data
 zdhs_2010_11_pp <- zdhs_2010_11_survey %>% 
-  group_by(district) %>% # To group the data and create the cohorts for the pseudo-panel
+  group_by(province, child_gender) %>% # To group the data and create the cohorts for the pseudo-panel
   # Results from the code below will be used for analysis
   summarize(
     # Number of children in each cohort
@@ -220,8 +207,7 @@ zdhs_2010_11_pp <- zdhs_2010_11_survey %>%
   mutate(across(where(is.numeric), ~ round(., 2))) %>% 
   # Drop all variables ending with _se
   select(-ends_with("_se")) %>% 
-  mutate(time = 3) %>% 
-  drop_na(district)
+  mutate(time = 3) 
 
 # Join the pseudo-panel data with the geodata
 zdhs_2010_11_pp_geodata <- left_join(zim_district, zdhs_2010_11_pp, by = c("NAME_2" = "district")) 

@@ -11,7 +11,7 @@ library(labelled) # for labelled data manipulation
 
 # loading the data
 
-zdhs_2005_6 <- read_dta("GitHub/climate-change-and-nutrition/data /raw data/zdhs_2005:6.DTA") %>% 
+zdhs_2005_6 <- read_dta("data /raw data/zdhs_2005:6.DTA") %>% 
   # convert labelled data to factors
   to_factor() %>%
   # Select the necessary columns
@@ -147,19 +147,9 @@ zdhs_2005_6 <- read_dta("GitHub/climate-change-and-nutrition/data /raw data/zdhs
   mutate(psu = as.character(psu))
 
 # Load the DHS shapefile
-zdhs_geodata_2005_6 <- st_read("GitHub/climate-change-and-nutrition/data /raw data/ZWGE52FL/ZWGE52FL.shp") %>% 
+zdhs_geodata_2005_6 <- st_read("data /raw data/ZWGE52FL/ZWGE52FL.shp") %>% 
   mutate(DHSCLUST = as.character(DHSCLUST))
 
-# Load the district level data
-
-zim_district <- st_read("GitHub/climate-change-and-nutrition/data /raw data/zwe_adm2_zimstat_ocha/zwe_admbnda_adm2_zimstat_ocha_20180911.shp")
-
-# Use the same crs for both datasets
-
-zim_district <- st_transform(zim_district, crs = st_crs(zdhs_geodata_2005_6))
-
-# Assign DHS Clusters to Districts - Join DHS Clusters with the districts
-zdhs05_6_district_geodata <- st_join(zdhs_geodata_2005_6, zim_district,join = st_within)
 
 
 
@@ -184,7 +174,7 @@ options(survey.lonely.psu = "adjust")
 # Create the pseudo-panel for the data
 
 zdhs_2005_6_pp <- zdhs_2005_6_survey %>%
-  group_by(district) %>% # To group the data and create the cohorts for the pseudo-panel)
+  group_by(province, child_gender) %>% # To group the data and create the cohorts for the pseudo-panel)
   # Results from the code below will be used for analysis
   summarize(
     # Number of children in each cohort
