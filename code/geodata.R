@@ -124,8 +124,8 @@ legend <- bi_legend(pal = pallet,
 
 # Combine the map and the legend
 complete_map <- ggdraw() +
-  draw_plot(climate_map, x = 0, y = 0, width = 0.8, height = 1) +
-  draw_plot(legend, x = 0.8, y = 0, width = 0.2, height = 1)
+  draw_plot(climate_map, 0, 0, 1, 1) +  # Draw the main map plot
+  draw_plot(legend, 0.05, 0.05, 0.28, 0.28)
 
 
 
