@@ -75,11 +75,15 @@ zdhs_1999 <- read_dta("data /raw data/zdhs_1999.DTA") %>%
     weight_height_perc = hw9)
 
 
+# The zdhs 1999 didnt have the data on household wealth as well as the nutrition indicators for
+# the children. This was saved in a separate file.
 
+# # Geting the wealth data
 
+zdhs_1999_wealth <- read_dta("data /raw data/zdhs_1999_wealth.dta") 
 
-
-
+# Getting the nutrition data
+zdhs_1999_anthro <- read_dta("data /raw data/zdhs_1999_anth.dta")
 
 
 
