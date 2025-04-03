@@ -9,3 +9,11 @@ as the climate indicators of choice) and the nutrition outcomes of children unde
 The study utilised a pseudo-panel estimation techniques, following the work of Angus (1985). In this study, the cohorts were created using the province in which the 
 child was born (to allow merging the climate data that was available only at provincial level) and the gender of the child. All estimations were done using the 
 fixed effects panel regression technique. 
+
+## File Management
+
+The files are arranged as follows:
+
+- `code/` - all the code used for cleaning and analysis of the data.
+- `documentation/` - All other documents needed to understand variable calculation etc
+- `processed data/` - only cleaned and processed data is tracked, to comply with the ethical requirements of the DHS program.
