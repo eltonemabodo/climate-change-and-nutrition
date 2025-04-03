@@ -15,5 +15,5 @@ fixed effects panel regression technique.
 The files are arranged as follows:
 
 - `code/` - all the code used for cleaning and analysis of the data.
-- `documentation/` - All other documents needed to understand variable calculation etc
-- `processed data/` - only cleaned and processed data is tracked, to comply with the ethical requirements of the DHS program.
+- `data/` - only cleaned and processed data is tracked, to comply with the ethical requirements of the DHS program.
+- `miscellanious/` - All other documents needed to understand variable calculation etc
