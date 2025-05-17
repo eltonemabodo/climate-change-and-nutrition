@@ -10,7 +10,7 @@ library(here) # for file path management
 library(labelled) # for labelled data manipulation
 
 # loading the data
-zdhs_2010_11 <- read_dta("data /raw data/zdhs_2010:11.DTA") %>% 
+zdhs_2010_11 <- read_dta("climate-change-and-nutrition/data /raw data/zdhs_2010:11.DTA") %>% 
   # convert labelled data to factors
   to_factor() %>%
   # Select the necessary columns
@@ -144,9 +144,6 @@ zdhs_2010_11 <- read_dta("data /raw data/zdhs_2010:11.DTA") %>%
            ~ as.numeric(as.character(.)))
   )
 
-# Load the DHS shapefile
-zdhs_geodata_2010_11 <- st_read("data /raw data/ZWGE61FL/ZWGE61FL.shp")
-
 
 
 # Set data to be survey data for complex survey data analysis
@@ -209,8 +206,6 @@ zdhs_2010_11_pp <- zdhs_2010_11_survey %>%
   select(-ends_with("_se")) %>% 
   mutate(time = 3) 
 
-# Join the pseudo-panel data with the geodata
-zdhs_2010_11_pp_geodata <- left_join(zim_district, zdhs_2010_11_pp, by = c("NAME_2" = "district")) 
 
 
 
