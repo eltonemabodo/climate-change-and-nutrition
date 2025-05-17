@@ -49,4 +49,4 @@ po/*~
 rsconnect/
 
 # Data - DHS data protection is given by the DHS Program
-data/raw data/
+data/raw data/*
