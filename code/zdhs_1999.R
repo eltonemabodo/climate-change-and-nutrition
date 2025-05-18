@@ -11,7 +11,7 @@ library(labelled) # for labelled data manipulation
 
 # loading the data
 
-zdhs_1999 <- read_dta("data /raw data/zdhs_1999.DTA") %>% 
+zdhs_1999 <- read_dta("climate-change-and-nutrition/data /raw data/zdhs_1999.DTA") %>% 
   # convert labelled data to factors
   to_factor() %>%
   # Select the necessary columns
@@ -80,10 +80,10 @@ zdhs_1999 <- read_dta("data /raw data/zdhs_1999.DTA") %>%
 
 # # Geting the wealth data
 
-zdhs_1999_wealth <- read_dta("data /raw data/zdhs_1999_wealth.dta") 
+zdhs_1999_wealth <- read_dta("climate-change-and-nutrition/data /raw data/zdhs_1999_wealth.dta") 
 
 # Getting the nutrition data
-zdhs_1999_anthro <- read_dta("data /raw data/zdhs_1999_anth.dta")
+zdhs_1999_anthro <- read_dta("climate-change-and-nutrition/data /raw data/zdhs_1999_anth.dta")
 
 
 
